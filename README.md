@@ -74,7 +74,7 @@ observer.addElement(element, () => alert('Using a margin'), {
 ### Observe an element with custom root
 
 ```js
-const element = document.getElementById('my-element)
+const element = document.getElementById('my-element')
 observer.addElement(element, () => `element within margin!`, {
     root: document.getElementById('my-scroll-window')
 })
