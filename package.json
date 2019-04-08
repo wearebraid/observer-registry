@@ -1,6 +1,6 @@
 {
   "name": "observer-registry",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "description": "An IntersectionObserver utility for notifying callbacks when an element's intersection changes.",
   "main": "dist/observer-registry.min.js",
   "scripts": {
