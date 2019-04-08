@@ -1,6 +1,8 @@
 Observer Registry
 -----------------
 
+[![CircleCI](https://circleci.com/gh/wearebraid/observer-registry.svg?style=svg)](https://circleci.com/gh/wearebraid/observer-registry)
+
 Observer Registry is a lightweight (1.8KB or 709B gzip!) library to make interacting with the
 [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
 a little more pleasant by allowing you to specify callbacks for each element you
