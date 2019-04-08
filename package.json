@@ -2,7 +2,7 @@
   "name": "observer-registry",
   "version": "1.0.0",
   "description": "An IntersectionObserver utility for notifying callbacks when an element's intersection changes.",
-  "main": "index.js",
+  "main": "dist/observer-registry.min.js",
   "scripts": {
     "test": "jest",
     "build": "uglifyjs --compress --mangle -o dist/observer-registry.min.js -- src/ObserverRegistry.js "
