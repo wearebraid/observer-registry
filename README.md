@@ -32,7 +32,7 @@ notified when it changes.
 
 ```js
 const element = document.getElementById('my-element')
-observer.addElement(element, event => {alert(`${event.visibility ? ' ' : ' not '}visible`))
+observer.addElement(element, event => alert('element visibility changed!'))
 ```
 
 You can pass as many elements into an instance of  `ObserverRegistry` as you want:
