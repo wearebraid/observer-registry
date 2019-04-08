@@ -1,4 +1,4 @@
-const ObserverRegistry = require('../src/ObserverRegistry')
+const ObserverRegistry = require('../dist/observer-registry.min.js')
 
 window.IntersectionObserver = jest.fn().mockImplementation((callback, options) => {
   return {

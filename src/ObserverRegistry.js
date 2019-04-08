@@ -17,14 +17,14 @@ function ObserverRegistry () {
  * @param {String} rootMargin
  * @param {Array|String} threshold
  */
-ObserverRegistry.prototype.getObserver = function (root = null, rootMargin = null, threshold = null) {
-  const byMargin = (this.observers.has(root) ? this.observers : this.observers.set(root, new Map())).get(root)
-  const byThreshold = (byMargin.has(rootMargin) ? byMargin : byMargin.set(rootMargin, new Map())).get(rootMargin)
+ObserverRegistry.prototype.getObserver = function (root, rootMargin, threshold) {
+  var byMargin = (this.observers.has(root) ? this.observers : this.observers.set(root, new Map())).get(root)
+  var byThreshold = (byMargin.has(rootMargin) ? byMargin : byMargin.set(rootMargin, new Map())).get(rootMargin)
   if (!byThreshold.has(threshold)) {
     byThreshold.set(threshold, new IntersectionObserver(this.triggered.bind(this), {
-      root,
-      rootMargin,
-      threshold
+      root: root,
+      rootMargin: rootMargin,
+      threshold: threshold
     }))
   }
   return byThreshold.get(threshold)
@@ -45,14 +45,14 @@ ObserverRegistry.prototype.triggered = function (entries) {
  * @param {Array} entries An array of IntersectionObserverEntry
  */
 ObserverRegistry.prototype.updateVisibility = function (entries) {
-  const that = this
+  var that = this
   entries.forEach(function (entry) {
     if (that.registry.has(entry.target)) {
-      const registrant = that.registry.get(entry.target)
-      Object.assign(registrant, {
+      var registrant = that.registry.get(entry.target)
+      that.merge(registrant, {
         visibility: entry.isIntersecting,
         previousVisibility: registrant.visibility,
-        entry
+        entry: entry
       })
       that.visible.add(entry.target)
     }
@@ -64,7 +64,7 @@ ObserverRegistry.prototype.updateVisibility = function (entries) {
  * Notify all registrants of any status changes.
  */
 ObserverRegistry.prototype.notify = function () {
-  const that = this
+  var that = this
   this.registry.forEach(function (registrant, el) {
     if (registrant.visibility !== registrant.previousVisibility) {
       registrant.callback(registrant.visibility)
@@ -79,8 +79,9 @@ ObserverRegistry.prototype.notify = function () {
  * Bind a dom element to our observations
  * @param {Element} el
  */
-ObserverRegistry.prototype.addElement = function (el, callback, options = { root: null, rootMargin: '0px', threshold: 0.0 }) {
-  const that = this
+ObserverRegistry.prototype.addElement = function (el, callback, options) {
+  var that = this
+  options = this.merge({ root: null, rootMargin: '0px', threshold: 0.0 }, options || {})
   if (Array.isArray(el) || el instanceof NodeList) {
     el.forEach(function (element) {
       that.addElement(element, callback, options)
@@ -88,10 +89,10 @@ ObserverRegistry.prototype.addElement = function (el, callback, options = { root
     return this
   }
   if (!this.registry.has(el)) {
-    const observer = this.getObserver(options.root, options.rootMargin, options.threshold)
-    this.registry.set(el, Object.assign(options, {
-      callback,
-      observer,
+    var observer = this.getObserver(options.root, options.rootMargin, options.threshold)
+    this.registry.set(el, this.merge(options, {
+      callback: callback,
+      observer: observer,
       visibility: false,
       previousVisibility: false
     }))
@@ -106,12 +107,26 @@ ObserverRegistry.prototype.addElement = function (el, callback, options = { root
  */
 ObserverRegistry.prototype.removeElement = function (el) {
   if (this.registry.has(el)) {
-    const registrant = this.registry.get(el)
-    const observer = this.getObserver(registrant.root, registrant.rootMargin, registrant.threshold)
+    var registrant = this.registry.get(el)
+    var observer = this.getObserver(registrant.root, registrant.rootMargin, registrant.threshold)
     this.visible.delete(el)
     this.registry.delete(el)
     observer.unobserve(el)
   }
+}
+
+/**
+ * In ES5 we can't count on Object.assign, so we have our own spin on it
+ */
+ObserverRegistry.prototype.merge = function (resObj) {
+  for (var i = 1; i < arguments.length; i += 1) {
+    var obj = arguments[i]
+    var keys = Object.keys(obj)
+    for (var j = 0; j < keys.length; j += 1) {
+      resObj[keys[j]] = obj[keys[j]]
+    }
+  }
+  return resObj
 }
 
 module.exports = ObserverRegistry
