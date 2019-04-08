@@ -103,6 +103,8 @@ threshold   | `IntersectionObserver` threshold  | `0.0`
 
 ## Limitations
 
+There are a few known limitations, happy to accept pull requests for these or
+any others you might find.
 
 ### One instance of each element
 

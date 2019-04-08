@@ -8,7 +8,7 @@ function ObserverRegistry () {
   this.observers = new Map()
   this.registry = new Map()
   this.visible = new Set()
-} 
+}
 
 /**
  * Returns an existing IntersectionObserver with matching options or
