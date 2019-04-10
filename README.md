@@ -6,7 +6,7 @@ Observer Registry
 Observer Registry is a lightweight (1.8KB or 709B gzip!) library to make interacting with the
 [Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
 a little more pleasant by allowing you to specify callbacks for each element you
-are observer. ObserverRegistry will handle instantiating any]
+are observing. ObserverRegistry will handle instantiating any
 `IntersectionObservers` while using the fewest instances to accomplish your
 observation needs.
 
@@ -58,7 +58,7 @@ observer.addElement(document.querySelectorAll('.pictures'), callback)
 
 ### Removing an element
 
-To stop watching for intersection events on an element simply remove it.
+To stop watching for intersection events on an element remove it from the registry.
 
 ```js
 observer.removeElement(element)
