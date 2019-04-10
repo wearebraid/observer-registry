@@ -31,7 +31,11 @@ Observing an element is simple, you just pass the element and a callback to be
 notified when it changes.
 
 ```js
+import ObserverRegistry from 'observer-registry'
+
+const observer = new ObserverRegistry()
 const element = document.getElementById('my-element')
+
 observer.addElement(element, event => alert('element visibility changed!'))
 ```
 
